@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <title>Kraig's Casino</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center
+        }
+
+        form#chat {
+            border-color: #000;
+            border-style: solid;
+            border-width: 0px 2px 2px;
+            position: relative;
+            bottom: 0;
+        }
+
+        form#chat input {
+            border: 0;
+            padding: 10px;
+            width: 100%;
+        }
+
+        form#chat button {
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+            width: 100%;
+        }
+
+        form#username {
+            text-align: center;
+            margin-top: 20%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        form#username input {
+            padding: 10px;
+        }
+
+        div#error-container {
+            text-align: center;
+            padding-top: 15px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px;
+            height: 50vh;
+        }
+
+        #message-container {
+            padding: 15px;
+            height: 50vh;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+
+        .player {
+            border: 2px solid black;
+            height: 10vh;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        .room {
+            padding: 15px;
+        }
+
+        .player-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="./frontend.js"></script>
+<body>
+<div class="container">
+    <div id="main">
+        <div id="signin">
+            <form action="" id="username">
+                <input id="name" type="text" name="name" value="" placeholder="Enter your name">
+                <input type="submit" onclick="thingy.setUsername()" value="Submit"><br/>
+                <div style="display:inline-block; margin-top: 15px;" class="g-recaptcha"
+                     data-sitekey="6LcaWiwUAAAAAANckOb4Si3bR4MrTTih1Fj-TFnk"></div>
+            </form>
+            <div id="error-container"></div>
+        </div>
+
+        <div id="game">
+            <div class="col-sm-12" id="info-container"></div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div id="dealer" class="player"></div>
+                    <div id="p0" class="player"></div>
+                    <div id="p1" class="player"></div>
+                    <div id="p2" class="player"></div>
+                    <div id="p3" class="player"></div>
+                    <div id="p4" class="player"></div>
+                    <div id="ready" class="btn btn-secondary" onclick="thingy.readyCheck(event)">Ready</div>
+                    <div id="hit" class="btn btn-danger" onclick="thingy.hit(event)">Hit</div>
+                    <div id="stay" class="btn btn-info" onclick="thingy.stay(event)">Stay</div>
+                    <div id="double" class="btn btn-info" onclick="thingy.double(event)">Double</div>
+                    <div id="split" class="btn btn-info" onclick="thingy.split(event)">Split</div>
+                </div>
+                <div class="col-sm-6">
+                    <div style="border: 2px solid black" id="message-container"></div>
+                    <form id="chat" onsubmit="thingy.sendMessage(event)">
+                        <div class="row no-gutters">
+                            <div class="col-sm-9">
+                                <input type="text" id="message" autocomplete="off">
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="button" name="button" onclick="thingy.sendMessage(event)">Send</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="room">
+                        <h5>Waiting List</h5>
+                        <div id="waitinglist-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
